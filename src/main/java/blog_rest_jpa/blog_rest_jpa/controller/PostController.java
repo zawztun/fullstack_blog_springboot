@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
 @RestController
 public class PostController {
   @Autowired private PostRepository postRepository;
-
-
   @CrossOrigin
   @PostMapping("/api/post")
   public PostDto newPost(@RequestBody PostDto p) {
@@ -37,9 +35,8 @@ public class PostController {
   @GetMapping("/api/post")
   public List<PostDto> postList() {
     List<Post> posts = postRepository.findAll();
-    return posts.stream().map(post -> PostMapper.modelToDto(post)).collect(Collectors.toList());
+    return posts.stream().map(post-> PostMapper.modelToDto(post)).collect(Collectors.toList());
   }
-
   @CrossOrigin
   @GetMapping("/api/post/{id}")
   public PostDto getPost(@PathVariable("id") Long id) {

@@ -26,4 +26,3 @@ public class PostDto {
         private LocalDateTime updatedOn;
     }
 
-
