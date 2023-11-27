@@ -4,7 +4,7 @@ import blog_rest_jpa.blog_rest_jpa.Mapper.PostMapper;
 import blog_rest_jpa.blog_rest_jpa.dto.PostDto;
 import blog_rest_jpa.blog_rest_jpa.model.Post;
 import blog_rest_jpa.blog_rest_jpa.repository.PostRepository;
-import org.apache.catalina.mapper.Mapper;
+import blog_rest_jpa.blog_rest_jpa.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 @CrossOrigin
 @RestController
 public class PostController {
+  @Autowired
+  private PostService postService;
   @Autowired private PostRepository postRepository;
   @CrossOrigin
   @PostMapping("/api/post")
@@ -34,27 +36,28 @@ public class PostController {
   @CrossOrigin
   @GetMapping("/api/post")
   public List<PostDto> postList() {
-    List<Post> posts = postRepository.findAll();
-    return posts.stream().map(post-> PostMapper.modelToDto(post)).collect(Collectors.toList());
+   return postService.postsList();
   }
   @CrossOrigin
   @GetMapping("/api/post/{id}")
   public PostDto getPost(@PathVariable("id") Long id) {
-    Post p = postRepository.findById(id).get();
-    PostDto postDto = PostMapper.modelToDto(p);
-    return postDto;
+    System.out.println(id);
+    return postService.getPostById(id);
   }
   @CrossOrigin
   @DeleteMapping("/api/post/{id}")
   public String deletePost(@PathVariable("id") Long id) {
-    postRepository.deleteById(id);
-    return "Your post is Successful deleted";
+    return postService.deletedPost(id);
   }
   @CrossOrigin
   @PutMapping("/api/post/{id}")
-  public PostDto updatePost(@RequestBody PostDto p) {
-    Post editPost = PostMapper.dtoToModel(p);
-    Post post = postRepository.save(editPost);
-    return PostMapper.modelToDto(post);
+  public PostDto postUpdate(@RequestBody PostDto p) {
+    System.out.println(p);
+  return postService.updatedPost(p);
+  }
+  @CrossOrigin
+  @GetMapping("/api/post/search")
+  public List<PostDto> searchPost(@RequestParam("title") String title) {
+    return postService.serachPostByTitle(title);
   }
 }
