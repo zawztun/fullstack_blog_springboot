@@ -11,28 +11,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @CrossOrigin
 @RestController
 public class PostController {
   @Autowired
   private PostService postService;
-  @Autowired private PostRepository postRepository;
+
   @CrossOrigin
   @PostMapping("/api/post")
   public PostDto newPost(@RequestBody PostDto p) {
-    Post post = PostMapper.dtoToModel(p);
-    Post newPost = postRepository.save(post);
-    return PostMapper.modelToDto(newPost);
+  return postService.newPost(p);
   }
   @CrossOrigin
   @GetMapping("/api/post/recommended")
-  public PostDto recommendedPost(){
-    Post post = postRepository.findAllOrderedByLastId();
-    PostDto postDto = PostMapper.modelToDto(post);
-    return postDto;
+  public PostDto recommendedLastPost(){
+    return postService.recommendedPost();
   }
-
   @CrossOrigin
   @GetMapping("/api/post")
   public List<PostDto> postList() {
