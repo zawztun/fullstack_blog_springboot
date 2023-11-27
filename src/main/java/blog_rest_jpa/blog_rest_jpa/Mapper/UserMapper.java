@@ -5,7 +5,6 @@ import blog_rest_jpa.blog_rest_jpa.model.User;
 
 public class UserMapper {
   public static UserDto modelToDto(User user){
-
         return UserDto.builder()
                 .id(user.getId())
                 .password(user.getPassword())
